@@ -1,0 +1,422 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}[hidden]{display:none!important}</style>
+<title>Xin lỗi Út Dâu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
+<style>
+/* Layout: one centered column. A strawberry mascot sits on top; below it the apology (dodging button) swaps for the letter once she forgives. */
+:root {
+  --bg: #FFF0F3;
+  --surface: #FFFFFF;
+  --ink: #3B0F1F;
+  --muted: #86475A;
+  --line: #F4C3CF;
+  --berry: #D6264B;
+  --berry-deep: #9C1535;
+  --on-berry: #FFFFFF;
+  --leaf: #2F8F5B;
+  --seed: #F7C948;
+  --face: #2A0A16;
+  --blush: #FF9DB4;
+  --tear: #7CC4F5;
+  --heart: #F2A0B4;
+  --focus: #3B0F1F;
+  --font-display: "Baloo 2", "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Be Vietnam Pro", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #230912;
+    --surface: #33111D;
+    --ink: #FFE6EC;
+    --muted: #E3A9BA;
+    --line: #5B2236;
+    --berry: #FF5A7E;
+    --berry-deep: #B8294B;
+    --on-berry: #2A0A16;
+    --leaf: #55C98A;
+    --seed: #F7C948;
+    --heart: #7A2A44;
+    --focus: #FFE6EC;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #230912;
+  --surface: #33111D;
+  --ink: #FFE6EC;
+  --muted: #E3A9BA;
+  --line: #5B2236;
+  --berry: #FF5A7E;
+  --berry-deep: #B8294B;
+  --on-berry: #2A0A16;
+  --leaf: #55C98A;
+  --seed: #F7C948;
+  --heart: #7A2A44;
+  --focus: #FFE6EC;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  padding-inline: 1rem;
+  padding-block: 1.25rem 3rem;
+}
+.hearts { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.hearts span {
+  position: absolute; bottom: -2rem; left: var(--x);
+  font-size: var(--s); color: var(--heart); opacity: 0;
+  animation: rise var(--d) linear var(--delay) infinite;
+}
+@keyframes rise {
+  0% { transform: translate(0, 0); opacity: 0; }
+  12% { opacity: .75; }
+  100% { transform: translate(var(--sway), -112vh); opacity: 0; }
+}
+.page {
+  position: relative; z-index: 1;
+  max-width: 34rem; margin-inline: auto;
+  display: grid; gap: 1.25rem; justify-items: center;
+}
+.mascot { margin: 0; display: grid; justify-items: center; gap: .25rem; }
+.mascot svg { width: min(58vw, 12.5rem); height: auto; overflow: visible; }
+.mascot .shadow { width: 7rem; height: .8rem; border-radius: 50%; background: var(--line); opacity: .8; }
+.mascot.hop svg { animation: hop .9s cubic-bezier(.3, 1.5, .5, 1); }
+@keyframes hop {
+  0% { transform: translateY(0) scale(1, 1); }
+  30% { transform: translateY(-1.6rem) scale(.96, 1.05); }
+  60% { transform: translateY(0) scale(1.06, .94); }
+  100% { transform: translateY(0) scale(1, 1); }
+}
+.body-fill { fill: var(--berry); }
+.leaf-fill { fill: var(--leaf); }
+.seed-fill { fill: var(--seed); }
+.face-fill { fill: var(--face); }
+.face-stroke { stroke: var(--face); fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.blush-fill { fill: var(--blush); opacity: .55; }
+.tear-fill { fill: var(--tear); }
+.eye-shine { fill: #fff; }
+.mascot[data-mood="happy"] .on-sad { display: none; }
+.mascot[data-mood="sad"] .on-happy { display: none; }
+
+h1, h2 {
+  font-family: var(--font-display); font-weight: 800; line-height: 1.1;
+  text-wrap: balance; margin: 0;
+}
+h1 { font-size: clamp(2rem, 8.5vw, 2.9rem); text-align: center; }
+h2 { font-size: clamp(1.6rem, 6.5vw, 2.1rem); text-align: center; }
+h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; margin: 0 0 .5rem; }
+.nick { color: var(--berry); display: inline-block; transition: opacity .25s; }
+.nick.fade { opacity: 0; }
+
+.stage, .answer { display: grid; gap: 1.1rem; justify-items: center; width: 100%; }
+.answer[hidden], .stage[hidden] { display: none; }
+.caption {
+  margin: 0; min-height: 3.2em; text-align: center; max-width: 26rem;
+  color: var(--muted); font-weight: 500;
+}
+.sub { margin: 0; text-align: center; max-width: 24rem; text-wrap: pretty; }
+
+.choices {
+  position: relative; width: 100%; min-height: 11.5rem;
+  display: flex; flex-wrap: wrap; gap: .9rem; justify-content: center; align-content: flex-start;
+}
+.btn {
+  font: 600 1rem/1.2 var(--font-body);
+  border: 0; border-radius: 999px; padding: .9rem 1.4rem; cursor: pointer;
+}
+.btn:focus-visible, .linkish:focus-visible {
+  outline: 3px solid var(--focus); outline-offset: 3px;
+}
+.btn-yes {
+  background: var(--berry); color: var(--on-berry);
+  box-shadow: 0 .3rem 0 var(--berry-deep);
+  align-self: flex-start;
+  transition: font-size .3s, padding .3s;
+}
+.btn-yes:active { transform: translateY(.2rem); box-shadow: 0 .1rem 0 var(--berry-deep); }
+.btn-no {
+  background: transparent; color: var(--muted);
+  border: 2px solid var(--line);
+  transform-origin: 0 0;
+  transition: transform .4s cubic-bezier(.3, 1.35, .5, 1);
+  align-self: flex-start;
+}
+.btn-no.soft { color: var(--berry); border-color: var(--berry); }
+
+.meter { width: min(100%, 20rem); display: grid; gap: .35rem; font-size: .9rem; color: var(--muted); }
+.meter-top { display: flex; justify-content: space-between; gap: 1rem; }
+.meter-track { height: .6rem; border-radius: 999px; background: var(--line); overflow: hidden; }
+.meter-fill { height: 100%; width: 100%; border-radius: 999px; background: var(--berry); transition: width .4s; }
+
+.letter {
+  width: 100%; box-sizing: border-box; min-width: 0;
+  background: var(--surface); border: 2px solid var(--line); border-radius: 1.25rem;
+  padding: 1.25rem 1.25rem 1.4rem;
+}
+.letter p { margin: 0 0 .85rem; max-width: 60ch; text-wrap: pretty; }
+.letter p:last-of-type { margin-bottom: 0; }
+.sign { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; color: var(--berry); margin-top: 1rem; }
+.linkish {
+  background: none; border: 0; padding: .4rem; cursor: pointer;
+  font: 500 .92rem var(--font-body); color: var(--muted); text-decoration: underline;
+}
+
+.pop {
+  position: fixed; left: var(--ox); top: var(--oy); pointer-events: none; z-index: 5;
+  font-size: var(--s); color: var(--c); line-height: 1;
+  animation: pop 1.5s ease-out forwards;
+}
+@keyframes pop {
+  0% { transform: translate(-50%, -50%) scale(.4); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--r)) scale(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hearts { display: none; }
+  .mascot.hop svg { animation: none; }
+  .btn-no, .meter-fill, .btn-yes, .nick { transition: none; }
+}
+</style>
+
+<div class="hearts" aria-hidden="true" id="hearts"></div>
+
+<main class="page">
+  <figure class="mascot" id="mascot" data-mood="sad">
+    <svg viewBox="0 0 200 220" role="img" aria-label="Út Dâu, quả dâu tây đang buồn">
+      <path class="body-fill" d="M100 40 C150 36 182 62 176 108 C170 160 130 202 100 206 C70 202 30 160 24 108 C18 62 50 36 100 40Z"/>
+      <ellipse class="seed-fill" cx="58" cy="78" rx="3.5" ry="5" transform="rotate(-20 58 78)"/>
+      <ellipse class="seed-fill" cx="142" cy="78" rx="3.5" ry="5" transform="rotate(20 142 78)"/>
+      <ellipse class="seed-fill" cx="42" cy="118" rx="3.5" ry="5"/>
+      <ellipse class="seed-fill" cx="158" cy="118" rx="3.5" ry="5"/>
+      <ellipse class="seed-fill" cx="66" cy="164" rx="3.5" ry="5" transform="rotate(25 66 164)"/>
+      <ellipse class="seed-fill" cx="134" cy="164" rx="3.5" ry="5" transform="rotate(-25 134 164)"/>
+      <ellipse class="seed-fill" cx="100" cy="180" rx="3.5" ry="5"/>
+      <ellipse class="seed-fill" cx="100" cy="62" rx="3.5" ry="5"/>
+      <path class="leaf-fill" d="M100 46 C86 18 52 22 54 42 C70 34 88 38 100 46Z"/>
+      <path class="leaf-fill" d="M100 46 C114 18 148 22 146 42 C130 34 112 38 100 46Z"/>
+      <path class="leaf-fill" d="M100 46 C92 30 94 14 100 8 C106 14 108 30 100 46Z"/>
+      <ellipse class="blush-fill" cx="60" cy="128" rx="13" ry="8"/>
+      <ellipse class="blush-fill" cx="140" cy="128" rx="13" ry="8"/>
+      <g class="on-sad">
+        <circle class="face-fill" cx="78" cy="108" r="7"/>
+        <circle class="face-fill" cx="122" cy="108" r="7"/>
+        <circle class="eye-shine" cx="80.5" cy="105.5" r="2.4"/>
+        <circle class="eye-shine" cx="124.5" cy="105.5" r="2.4"/>
+        <path class="face-stroke" d="M66 94 L88 99 M134 94 L112 99" style="stroke-width:4"/>
+        <path class="face-stroke" d="M84 148 Q100 132 116 148"/>
+        <path class="tear-fill" d="M70 118 Q62 132 70 138 Q78 132 70 118Z"/>
+      </g>
+      <g class="on-happy">
+        <path class="face-stroke" d="M68 112 Q78 98 88 112 M112 112 Q122 98 132 112"/>
+        <path class="face-fill" d="M80 128 Q100 162 120 128 Z"/>
+        <ellipse class="blush-fill" cx="100" cy="146" rx="9" ry="5" style="opacity:.9"/>
+      </g>
+    </svg>
+    <div class="shadow" aria-hidden="true"></div>
+  </figure>
+
+  <section class="stage" id="ask">
+    <h1 id="headline" aria-label="Em bé ơi, anh xin lỗi nhớ"><span class="nick" id="nick" aria-hidden="true">Em bé</span><span aria-hidden="true"> ơi,<br>anh xin lỗi nhớ</span></h1>
+    <p class="sub">Cho anh một cơ hội làm em cười lại nhớ. Em tha lỗi cho anh nhớ honey?</p>
+    <p class="caption" id="caption" aria-live="polite"></p>
+    <div class="choices" id="choices">
+      <button class="btn btn-yes" id="yes" type="button">Tha cho anh đó. Gòi sao? 💖</button>
+      <button class="btn btn-no" id="no" type="button">Không, vẫn còn giận 😠</button>
+    </div>
+    <div class="meter">
+      <div class="meter-top"><span>Độ giận của Út Zôu</span><span id="meter-num">100%</span></div>
+      <div class="meter-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-label="Độ giận" id="meter"><div class="meter-fill" id="meter-fill"></div></div>
+    </div>
+  </section>
+
+  <section class="answer" id="answer" hidden>
+    <h2>Cảm ơn <span class="nick">em bé</span> đã tha cho anh</h2>
+    <article class="letter">
+      <h3>Thư xin lỗi của anh</h3>
+      <div id="letter"></div>
+      <p class="sign" id="sign"></p>
+    </article>
+    <button class="linkish" id="replay" type="button">Xem lại từ đầu</button>
+  </section>
+</main>
+
+<script>
+(function () {
+  var CONFIG = {
+    nicks: ["Em bé", "Út Zôu", "Honey", "Bae", "Cục zàng"],
+    max: 5,
+    captions: [
+      "Anh biết anh sai rùi 🥺.",
+      "Ơ, nút giận chạy mất tiu. Chắc nó bít Hi cũm hối lỗi rùi ý.",
+      "Hoi mò cục zàngg. Nút chạy bé nữa kiaa.",
+      "Honey oi, nút giận nhỏ xíu òi, tha thứ cho anh nhớ.",
+      "Bae thương anh cho anh liên quan i mò.",
+      "Nút giận hết đường chạy nhớ. Út Zôu bấm i mòoo."
+    ],
+    noLabels: [
+      "Không, vẫn còn giận 😠",
+      "CÚC…",
+      "BÍNH...",
+      "ĐI GA ĐIIII",
+      "ONG NHAAA",
+      "Thôi, hết giận rồi 🥺"
+    ],
+    letter: [
+      "Anh biết anh làm em buồn bực, và anh không muốn kiếm cớ cho mình.",
+      "Anh xin lỗi. Anh sẽ nghiêm chỉnh bản thân, sắp xếp thời gian tốt hơn, kiềm chế ham muốn thể hiện trước bé, và lắng nghe em hơn, để không làm em buồn nữa.",
+      "Cảm ơn Út vì vẫn thương anh, kể cả lúc anh chưa làm tốt. Với anh, em là người quan trọng nhất."
+    ],
+    sign: "Công Túa của em"
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var attempts = 0, tx = 0, ty = 0, forgiven = false;
+
+  var mascot = $("mascot"), no = $("no"), yes = $("yes"), choices = $("choices");
+  var caption = $("caption"), nickEl = $("nick");
+
+  // Hearts nền
+  var hearts = $("hearts");
+  for (var i = 0; i < 14; i++) {
+    var h = document.createElement("span");
+    h.textContent = "♥";
+    h.style.setProperty("--x", (Math.random() * 96).toFixed(1) + "%");
+    h.style.setProperty("--s", (0.9 + Math.random() * 1.6).toFixed(2) + "rem");
+    h.style.setProperty("--d", (11 + Math.random() * 10).toFixed(1) + "s");
+    h.style.setProperty("--delay", (-Math.random() * 18).toFixed(1) + "s");
+    h.style.setProperty("--sway", ((Math.random() - .5) * 90).toFixed(0) + "px");
+    hearts.appendChild(h);
+  }
+
+  // Tên xoay vòng trong tiêu đề
+  var ni = 0;
+  if (!reduce) {
+    setInterval(function () {
+      if (forgiven) return;
+      nickEl.classList.add("fade");
+      setTimeout(function () {
+        ni = (ni + 1) % CONFIG.nicks.length;
+        nickEl.textContent = CONFIG.nicks[ni];
+        nickEl.classList.remove("fade");
+      }, 250);
+    }, 2600);
+  }
+
+  function render() {
+    var n = Math.min(attempts, CONFIG.max);
+    caption.textContent = CONFIG.captions[n];
+    no.textContent = CONFIG.noLabels[n];
+    no.classList.toggle("soft", attempts >= CONFIG.max);
+    var pct = Math.round(100 * (1 - attempts / (CONFIG.max + 1)));
+    if (forgiven) pct = 0;
+    $("meter-num").textContent = pct + "%";
+    $("meter-fill").style.width = pct + "%";
+    $("meter").setAttribute("aria-valuenow", String(pct));
+    yes.style.fontSize = (1 + attempts * 0.07).toFixed(2) + "rem";
+    yes.style.padding = (0.9 + attempts * 0.06).toFixed(2) + "rem " + (1.4 + attempts * 0.1).toFixed(2) + "rem";
+  }
+
+  function intersects(a, b) {
+    return !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+  }
+
+  function dodge() {
+    var scale = Math.max(0.6, 1 - attempts * 0.08);
+    var w = no.offsetWidth * scale, h = no.offsetHeight * scale;
+    var c = choices.getBoundingClientRect();
+    var b = no.getBoundingClientRect();
+    var y = yes.getBoundingClientRect();
+    var pad = 4, left, top, tries = 0, box;
+    do {
+      left = c.left + pad + Math.random() * Math.max(0, c.width - w - pad * 2);
+      top = c.top + pad + Math.random() * Math.max(0, c.height - h - pad * 2);
+      box = { left: left - 6, top: top - 6, right: left + w + 6, bottom: top + h + 6 };
+      tries++;
+    } while (intersects(box, y) && tries < 12);
+    tx += left - b.left;
+    ty += top - b.top;
+    no.style.transform = "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + scale.toFixed(2) + ")";
+  }
+
+  function bump() {
+    if (forgiven || attempts >= CONFIG.max) return;
+    attempts++;
+    render();
+    if (attempts < CONFIG.max) dodge();
+    else no.style.transform = no.style.transform.replace(/scale\([^)]*\)/, "scale(1)");
+  }
+
+  no.addEventListener("pointerenter", function (e) {
+    if (e.pointerType === "mouse") bump();
+  });
+  no.addEventListener("click", function () {
+    if (attempts >= CONFIG.max) forgive();
+    else bump();
+  });
+  yes.addEventListener("click", forgive);
+
+  function burst(originEl) {
+    if (reduce) return;
+    var r = originEl.getBoundingClientRect();
+    var ox = r.left + r.width / 2, oy = r.top + r.height / 2;
+    var glyphs = ["♥", "♥", "♥", "✿", "✦"];
+    var colors = ["var(--berry)", "var(--seed)", "var(--leaf)", "var(--blush)"];
+    for (var i = 0; i < 30; i++) {
+      var p = document.createElement("span");
+      p.className = "pop";
+      p.textContent = glyphs[i % glyphs.length];
+      var ang = Math.random() * Math.PI * 2, dist = 90 + Math.random() * 190;
+      p.style.setProperty("--ox", ox + "px");
+      p.style.setProperty("--oy", oy + "px");
+      p.style.setProperty("--dx", Math.cos(ang) * dist + "px");
+      p.style.setProperty("--dy", Math.sin(ang) * dist - 40 + "px");
+      p.style.setProperty("--r", (Math.random() * 120 - 60) + "deg");
+      p.style.setProperty("--s", (1 + Math.random() * 1.6).toFixed(2) + "rem");
+      p.style.setProperty("--c", colors[i % colors.length]);
+      document.body.appendChild(p);
+      setTimeout(function (el) { el.remove(); }.bind(null, p), 1600);
+    }
+  }
+
+  function forgive() {
+    if (forgiven) return;
+    forgiven = true;
+    render();
+    mascot.dataset.mood = "happy";
+    mascot.querySelector("svg").setAttribute("aria-label", "Út Dâu đang cười");
+    mascot.classList.remove("hop");
+    void mascot.offsetWidth;
+    mascot.classList.add("hop");
+    $("ask").hidden = true;
+    $("answer").hidden = false;
+    burst(mascot);
+    window.scrollTo(0, 0);
+  }
+
+  // Thư
+  CONFIG.letter.forEach(function (t) {
+    var p = document.createElement("p"); p.textContent = t; $("letter").appendChild(p);
+  });
+  $("sign").textContent = CONFIG.sign;
+
+  // Chơi lại
+  $("replay").addEventListener("click", function () {
+    forgiven = false; attempts = 0; tx = 0; ty = 0;
+    no.style.transform = "";
+    mascot.dataset.mood = "sad";
+    mascot.querySelector("svg").setAttribute("aria-label", "Út Dâu, quả dâu tây đang buồn");
+    $("answer").hidden = true;
+    $("ask").hidden = false;
+    render();
+    window.scrollTo(0, 0);
+  });
+
+  render();
+})();
+</script>
+</html>
